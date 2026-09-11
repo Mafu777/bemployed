@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Job {
+  id             String   @id @default(cuid())
+  title          String
+  company        String
+  companyLogoUrl String?
+  location       String
+  jobType        String   // e.g. Full-time, Part-time, Contract, Remote
+  category       String   // e.g. Admin, IT, Engineering, Retail
+  description    String
+  applyLink      String
+  salaryMin      Int?
+  salaryMax      Int?
+  salaryPeriod   String?  @default("month") // "month" or "year"
+  featured       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Bursary {
+  id              String    @id @default(cuid())
+  title           String
+  provider        String
+  providerLogoUrl String?
+  fieldOfStudy    String?
+  description     String
+  closingDate     DateTime?
+  applyLink       String
+  featured        Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
