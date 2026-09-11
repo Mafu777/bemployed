@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import Link from "next/link";
+import { Suspense } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import "./globals.css";
@@ -35,7 +36,9 @@ export default function RootLayout({
         ) : null}
       </head>
       <body className={`${jakarta.className} antialiased`}>
-        <Header />
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
 
         <main>{children}</main>
 
