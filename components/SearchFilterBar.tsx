@@ -20,10 +20,10 @@ export default function SearchFilterBar() {
 
   return (
     <div className="bg-gray-50 border-b px-4 pt-5 pb-4">
-      <p className="text-lg font-medium mb-1">Find your next role</p>
-      <p className="text-sm text-gray-500 mb-3">
-        Fresh jobs from real companies, updated daily
-      </p>
+      <p className="text-lg font-medium mb-1">Find your next opportunity</p>
+<p className="text-sm text-gray-500 mb-3">
+  Jobs, remote work, internships, learnerships and more — all in one place.
+</p>
       <form
         onSubmit={(e) => {
           e.preventDefault();

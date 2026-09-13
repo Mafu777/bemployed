@@ -5,16 +5,102 @@ import AdSlot from "@/components/AdSlot";
 
 export const dynamic = "force-dynamic";
 
+const BASE_URL = "https://bemployed.co.za";
+
+async function getJob(id: string) {
+  return prisma.job.findUnique({ where: { id } });
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const job = await getJob(params.id);
+  if (!job) return {};
+
+  const description =
+    job.description.length > 155
+      ? `${job.description.slice(0, 155)}...`
+      : job.description;
+
+  return {
+    title: `${job.title} at ${job.company}${job.location ? ` | ${job.location}` : ""} – BEmployed`,
+    description,
+    alternates: {
+      canonical: `${BASE_URL}/jobs/${job.id}`,
+    },
+  };
+}
+
+// Only maps job types that have a clear, correct schema.org equivalent.
+// Anything else is left out of the structured data rather than guessed.
+const EMPLOYMENT_TYPE_MAP: Record<string, string> = {
+  "Full-time": "FULL_TIME",
+  "Part-time": "PART_TIME",
+  Contract: "CONTRACT",
+  Internship: "INTERN",
+};
+
+function buildJobPostingJsonLd(job: NonNullable<Awaited<ReturnType<typeof getJob>>>) {
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    title: job.title,
+    description: job.description,
+    datePosted: job.createdAt.toISOString(),
+    hiringOrganization: {
+      "@type": "Organization",
+      name: job.company,
+    },
+  };
+
+  if (job.jobType === "Remote") {
+    jsonLd.jobLocationType = "TELECOMMUTE";
+  } else if (job.location) {
+    jsonLd.jobLocation = {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: job.location,
+        addressCountry: "ZA",
+      },
+    };
+  }
+
+  if (EMPLOYMENT_TYPE_MAP[job.jobType]) {
+    jsonLd.employmentType = EMPLOYMENT_TYPE_MAP[job.jobType];
+  }
+
+  if (job.salaryMin || job.salaryMax) {
+    jsonLd.baseSalary = {
+      "@type": "MonetaryAmount",
+      currency: "ZAR",
+      value: {
+        "@type": "QuantitativeValue",
+        ...(job.salaryMin ? { minValue: job.salaryMin } : {}),
+        ...(job.salaryMax ? { maxValue: job.salaryMax } : {}),
+        unitText: job.salaryPeriod === "year" ? "YEAR" : "MONTH",
+      },
+    };
+  }
+
+  return jsonLd;
+}
+
 export default async function JobDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const job = await prisma.job.findUnique({ where: { id: params.id } });
+  const job = await getJob(params.id);
   if (!job) notFound();
+
+  const jobPostingJsonLd = buildJobPostingJsonLd(job);
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd) }}
+      />
+
       {job.companyLogoUrl && (
         <div className="w-12 h-12 rounded-lg overflow-hidden border mb-3">
           <Image

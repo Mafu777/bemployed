@@ -10,6 +10,7 @@ const LINKS = [
   { href: "/?type=Remote", label: "Remote Jobs" },
   { href: "/work-abroad", label: "Work Abroad" },
   { href: "/bursaries", label: "Bursaries" },
+  { href: "/blog", label: "Blog" },
   { href: "/about", label: "About Us" },
 ];
 

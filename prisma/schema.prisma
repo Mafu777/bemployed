@@ -38,3 +38,14 @@ model Bursary {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
+
+model BlogPost {
+  id            String   @id @default(cuid())
+  title         String
+  excerpt       String?
+  content       String
+  coverImageUrl String?
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

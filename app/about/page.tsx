@@ -1,7 +1,10 @@
 export const metadata = {
-  title: "About Us | BEmployed",
+  title: "About BEmployed | South Africa's Job & Bursary Listings Site",
   description:
-    "BEmployed connects job seekers with real opportunities, posted in full detail with a direct link to apply.",
+    "Learn about BEmployed, a South African platform connecting job seekers and students with real job listings, remote opportunities and bursaries.",
+  alternates: {
+    canonical: "https://bemployed.co.za/about",
+  },
 };
 
 export default function AboutPage() {

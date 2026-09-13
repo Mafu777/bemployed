@@ -1,9 +1,6 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
-  "/admin/bursaries/page": "app/admin/bursaries/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/login/page": "app/admin/login/page.js",
-  "/api/admin/login/route": "app/api/admin/login/route.js",
-  "/admin/new/page": "app/admin/new/page.js"
+  "/about/page": "app/about/page.js",
+  "/sitemap.xml/[[...__metadata_id__]]/route": "app/sitemap.xml/[[...__metadata_id__]]/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js"
 }

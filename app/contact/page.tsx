@@ -1,8 +1,12 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Contact Us | BEmployed",
-  description: "Get in touch with the BEmployed team.",
+  title: "Contact BEmployed | Job Listings & Bursary Support",
+  description:
+    "Contact the BEmployed team to list a job, ask about a bursary, or report an outdated listing.",
+  alternates: {
+    canonical: "https://bemployed.co.za/contact",
+  },
 };
 
 // Replace with your real contact email

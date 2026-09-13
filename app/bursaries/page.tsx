@@ -4,8 +4,12 @@ import BursaryCard from "@/components/BursaryCard";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Bursaries | BEmployed",
-  description: "Bursaries and funding opportunities for university students.",
+  title: "South African Bursaries | Find Funding for Your Studies – BEmployed",
+  description:
+    "Explore bursaries and funding opportunities for South African students, including NSFAS, corporate and university-funded bursaries. Updated regularly.",
+  alternates: {
+    canonical: "https://bemployed.co.za/bursaries",
+  },
 };
 
 async function getBursaries() {

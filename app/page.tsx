@@ -6,6 +6,15 @@ import AdSlot from "@/components/AdSlot";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: "Find Jobs in South Africa | Remote, Local & Learnership Opportunities – BEmployed",
+  description:
+    "Browse real, up-to-date job listings across South Africa, including remote jobs, local jobs, learnerships, internships and bursaries. Updated daily.",
+  alternates: {
+    canonical: "https://bemployed.co.za",
+  },
+};
+
 async function getJobs(q?: string, type?: string) {
   return prisma.job.findMany({
     where: {
