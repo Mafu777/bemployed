@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 declare global {
   interface Window {
@@ -10,13 +10,22 @@ declare global {
 
 export default function AdSlot({ slotId }: { slotId: string }) {
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const adRef = useRef<HTMLModElement | null>(null);
 
   useEffect(() => {
-    if (!adsenseId) return;
+    if (!adsenseId || !adRef.current) return;
+
+    const ad = adRef.current;
+
+    // Prevent AdSense from processing the same ad slot more than once
+    if (ad.getAttribute("data-adsbygoogle-status")) {
+      return;
+    }
+
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch {
-      // AdSense script not loaded yet, safe to ignore
+      // AdSense may not be ready yet
     }
   }, [adsenseId]);
 
@@ -30,6 +39,7 @@ export default function AdSlot({ slotId }: { slotId: string }) {
 
   return (
     <ins
+      ref={adRef}
       className="adsbygoogle block"
       style={{ display: "block" }}
       data-ad-client={adsenseId}
