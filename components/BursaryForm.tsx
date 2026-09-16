@@ -7,6 +7,7 @@ import RichTextEditor from "@/components/RichTextEditor";
 type BursaryFormValues = {
   title: string;
   provider: string;
+  providerLogoUrl: string;
   fieldOfStudy: string;
   description: string;
   closingDate: string;
@@ -25,6 +26,7 @@ export default function BursaryForm({
     initialValues || {
       title: "",
       provider: "",
+      providerLogoUrl: "",
       fieldOfStudy: "",
       description: "",
       closingDate: "",
