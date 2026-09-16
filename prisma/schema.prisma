@@ -8,21 +8,22 @@ datasource db {
 }
 
 model Job {
-  id             String   @id @default(cuid())
-  title          String
-  company        String
-  companyLogoUrl String?
-  location       String
-  jobType        String   // e.g. Full-time, Part-time, Contract, Remote
-  category       String   // e.g. Admin, IT, Engineering, Retail
-  description    String
-  applyLink      String
-  salaryMin      Int?
-  salaryMax      Int?
-  salaryPeriod   String?  @default("month") // "month" or "year"
-  featured       Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id              String   @id @default(cuid())
+  title           String
+  company         String
+  companyLogoUrl  String?
+  location        String
+  jobType         String
+  category        String
+  description     String
+  applyLink       String
+  salaryMin       Int?
+  salaryMax       Int?
+  salaryPeriod    String?  @default("month")
+  closingDate     DateTime?
+  featured        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Bursary {

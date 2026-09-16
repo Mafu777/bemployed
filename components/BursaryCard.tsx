@@ -1,3 +1,4 @@
+import Link from "next/link";
 type Bursary = {
   id: string;
   title: string;
@@ -30,10 +31,8 @@ export default function BursaryCard({ bursary }: { bursary: Bursary }) {
   const closing = formatClosingDate(bursary.closingDate);
 
   return (
-    <a
-      href={bursary.applyLink}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={`/bursaries/${bursary.id}`}
       className="block bg-white border rounded-xl p-4 hover:border-brand-400 transition-colors"
     >
       <p className="font-medium text-sm">{bursary.title}</p>
@@ -49,6 +48,6 @@ export default function BursaryCard({ bursary }: { bursary: Bursary }) {
           {closing}
         </span>
       )}
-    </a>
+    </Link>
   );
 }

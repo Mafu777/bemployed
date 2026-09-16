@@ -12,6 +12,7 @@ type Job = {
   salaryMin?: number | null;
   salaryMax?: number | null;
   salaryPeriod?: string | null;
+  closingDate?: string | Date | null;
 };
 
 function timeAgo(date: string | Date): string {
@@ -36,6 +37,23 @@ function formatSalary(
   if (min) return `From ${fmt(min)} ${label}`;
   return `Up to ${fmt(max!)} ${label}`;
 }
+
+function formatJobClosingDate(date?: string | Date | null): string | null {
+  if (!date) return null;
+  const d = new Date(date);
+  const today = new Date();
+  const days = Math.ceil((d.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  const formatted = d.toLocaleDateString("en-ZA", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+  if (days < 0) return `Closed ${formatted}`;
+  if (days === 0) return `Closes today (${formatted})`;
+  if (days <= 7) return `Closes in ${days} days (${formatted})`;
+  return `Closes ${formatted}`;
+}
+
 export default function JobCard({ job }: { job: Job }) {
   const initials = job.company
     .split(" ")
@@ -72,20 +90,27 @@ export default function JobCard({ job }: { job: Job }) {
           </p>
         </div>
       </div>
-      {formatSalary(job.salaryMin, job.salaryMax, job.salaryPeriod) && (
-  <p className="text-sm font-medium text-brand-700 mt-2">
-    {formatSalary(job.salaryMin, job.salaryMax, job.salaryPeriod)}
-  </p>
-)}
 
-<div className="flex gap-2 mt-3">
-  <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600">
-    {job.jobType}
-  </span>
-  <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600">
-    {timeAgo(job.createdAt)}
-  </span>
-</div>
+      {formatSalary(job.salaryMin, job.salaryMax, job.salaryPeriod) && (
+        <p className="text-sm font-medium text-brand-700 mt-2">
+          {formatSalary(job.salaryMin, job.salaryMax, job.salaryPeriod)}
+        </p>
+      )}
+
+      {formatJobClosingDate(job.closingDate) && (
+        <p className="text-xs text-gray-500 mt-1">
+          {formatJobClosingDate(job.closingDate)}
+        </p>
+      )}
+
+      <div className="flex gap-2 mt-3">
+        <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600">
+          {job.jobType}
+        </span>
+        <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600">
+          {timeAgo(job.createdAt)}
+        </span>
+      </div>
     </Link>
   );
 }

@@ -51,6 +51,10 @@ function buildJobPostingJsonLd(job: NonNullable<Awaited<ReturnType<typeof getJob
     },
   };
 
+  if (job.closingDate) {
+    jsonLd.validThrough = job.closingDate.toISOString();
+  }
+
   if (job.jobType === "Remote") {
     jsonLd.jobLocationType = "TELECOMMUTE";
   } else if (job.location) {
@@ -84,6 +88,15 @@ function buildJobPostingJsonLd(job: NonNullable<Awaited<ReturnType<typeof getJob
   return jsonLd;
 }
 
+function formatJobClosingDate(date?: Date | null): string | null {
+  if (!date) return null;
+  return new Date(date).toLocaleDateString("en-ZA", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 export default async function JobDetailPage({
   params,
 }: {
@@ -93,6 +106,7 @@ export default async function JobDetailPage({
   if (!job) notFound();
 
   const jobPostingJsonLd = buildJobPostingJsonLd(job);
+  const closing = formatJobClosingDate(job.closingDate);
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
@@ -116,7 +130,7 @@ export default async function JobDetailPage({
         {job.company} &middot; {job.location}
       </p>
       <h1 className="text-xl font-medium mb-3">{job.title}</h1>
-      <div className="flex gap-2 mb-5">
+      <div className="flex gap-2 mb-3">
         <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600">
           {job.jobType}
         </span>
@@ -124,6 +138,10 @@ export default async function JobDetailPage({
           {job.category}
         </span>
       </div>
+
+      {closing && (
+        <p className="text-xs text-gray-500 mb-5">Closing date: {closing}</p>
+      )}
 
       <a
         href={job.applyLink}

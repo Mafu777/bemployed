@@ -1,6 +1,3 @@
 {
-  "/page": "app/page.js",
-  "/about/page": "app/about/page.js",
-  "/sitemap.xml/[[...__metadata_id__]]/route": "app/sitemap.xml/[[...__metadata_id__]]/route.js",
-  "/robots.txt/route": "app/robots.txt/route.js"
+  "/page": "app/page.js"
 }

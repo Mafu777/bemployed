@@ -15,6 +15,7 @@ type JobFormValues = {
   salaryMin: string;
   salaryMax: string;
   salaryPeriod: string;
+  closingDate: string;
 };
 
 const JOB_TYPES = ["Full-time", "Part-time", "Contract", "Remote", "Internship"];
@@ -40,6 +41,7 @@ export default function JobForm({
       salaryMin: "",
       salaryMax: "",
       salaryPeriod: "month",
+      closingDate: "",
     }
   );
   const [error, setError] = useState("");
@@ -73,6 +75,7 @@ export default function JobForm({
         salaryMin: values.salaryMin ? Number(values.salaryMin) : null,
         salaryMax: values.salaryMax ? Number(values.salaryMax) : null,
         salaryPeriod: values.salaryPeriod || null,
+        closingDate: values.closingDate || null,
       }),
     });
     setSaving(false);
@@ -196,6 +199,19 @@ export default function JobForm({
         </div>
         <span className="text-xs text-gray-400 mt-1 block">
           Leave blank if you'd rather not disclose salary.
+        </span>
+      </label>
+
+      <label className="text-sm">
+        Closing date (optional)
+        <input
+          type="date"
+          value={values.closingDate}
+          onChange={(e) => update("closingDate", e.target.value)}
+          className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
+        />
+        <span className="text-xs text-gray-400 mt-1 block">
+          Leave blank if the job doesn't have a closing date.
         </span>
       </label>
 

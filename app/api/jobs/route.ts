@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
     salaryMin,
     salaryMax,
     salaryPeriod,
+    closingDate,
   } = body;
 
   if (!title || !company || !location || !jobType || !category || !description || !applyLink) {
@@ -44,6 +45,7 @@ export async function POST(request: NextRequest) {
       salaryMin: salaryMin ?? null,
       salaryMax: salaryMax ?? null,
       salaryPeriod: salaryPeriod ?? null,
+      closingDate: closingDate ? new Date(closingDate) : null,
     },
   });
 
