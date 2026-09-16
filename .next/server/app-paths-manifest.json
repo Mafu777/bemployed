@@ -1,3 +1,4 @@
 {
+  "/admin/bursaries/new/page": "app/admin/bursaries/new/page.js",
   "/page": "app/page.js"
 }

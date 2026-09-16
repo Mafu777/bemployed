@@ -8,12 +8,16 @@ async function getBursary(id: string) {
   return prisma.bursary.findUnique({ where: { id } });
 }
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, "");
+}
+
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const bursary = await getBursary(params.id);
   if (!bursary) return {};
   return {
     title: `${bursary.title} | ${bursary.provider} – BEmployed Bursaries`,
-    description: bursary.description.slice(0, 155),
+    description: stripHtml(bursary.description).slice(0, 155),
   };
 }
 
@@ -71,9 +75,10 @@ export default async function BursaryDetailPage({
         Apply for this bursary
       </a>
 
-      <div className="prose prose-sm max-w-none whitespace-pre-wrap text-gray-700">
-        {bursary.description}
-      </div>
+      <div
+        className="prose prose-sm max-w-none text-gray-700"
+        dangerouslySetInnerHTML={{ __html: bursary.description }}
+      />
     </div>
   );
 }

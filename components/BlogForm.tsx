@@ -2,36 +2,41 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import RichTextEditor from "@/components/RichTextEditor";
 
-type BlogFormValues = {
+type BursaryFormValues = {
   title: string;
-  excerpt: string;
-  content: string;
-  coverImageUrl: string;
-  published: boolean;
+  provider: string;
+  providerLogoUrl: string;
+  fieldOfStudy: string;
+  description: string;
+  closingDate: string;
+  applyLink: string;
 };
 
-export default function BlogForm({
+export default function BursaryForm({
   initialValues,
-  postId,
+  bursaryId,
 }: {
-  initialValues?: BlogFormValues;
-  postId?: string;
+  initialValues?: BursaryFormValues;
+  bursaryId?: string;
 }) {
   const router = useRouter();
-  const [values, setValues] = useState<BlogFormValues>(
+  const [values, setValues] = useState<BursaryFormValues>(
     initialValues || {
       title: "",
-      excerpt: "",
-      content: "",
-      coverImageUrl: "",
-      published: true,
+      provider: "",
+      providerLogoUrl: "",
+      fieldOfStudy: "",
+      description: "",
+      closingDate: "",
+      applyLink: "",
     }
   );
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
-  function update<K extends keyof BlogFormValues>(key: K, value: BlogFormValues[K]) {
+  function update<K extends keyof BursaryFormValues>(key: K, value: BursaryFormValues[K]) {
     setValues((prev) => ({ ...prev, [key]: value }));
   }
 
@@ -39,82 +44,116 @@ export default function BlogForm({
     e.preventDefault();
     setError("");
 
-    if (!values.title || !values.content) {
-      setError("Title and content are required.");
+    if (!values.title || !values.provider || !values.description || !values.applyLink) {
+      setError("Fill in every required field before saving.");
+      return;
+    }
+    try {
+      new URL(values.applyLink);
+    } catch {
+      setError("Apply link must be a full URL, e.g. https://provider.com/apply");
       return;
     }
 
     setSaving(true);
-    const res = await fetch(postId ? `/api/blog/${postId}` : "/api/blog", {
-      method: postId ? "PUT" : "POST",
+    const res = await fetch(bursaryId ? `/api/bursaries/${bursaryId}` : "/api/bursaries", {
+      method: bursaryId ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...values,
-        excerpt: values.excerpt || null,
-        coverImageUrl: values.coverImageUrl || null,
+        providerLogoUrl: values.providerLogoUrl || null,
+        fieldOfStudy: values.fieldOfStudy || null,
+        closingDate: values.closingDate || null,
       }),
     });
     setSaving(false);
 
     if (res.ok) {
-      router.push("/admin/blog");
+      router.push("/admin/bursaries");
       router.refresh();
     } else {
-      setError("Something went wrong saving this article. Try again.");
+      setError("Something went wrong saving this bursary. Try again.");
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <label className="text-sm">
-        Title
+        Bursary title
         <input
           type="text"
           value={values.title}
           onChange={(e) => update("title", e.target.value)}
+          placeholder="e.g. NSFAS Bursary 2027"
           className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
         />
       </label>
 
       <label className="text-sm">
-        Excerpt (optional, shown on the blog list)
+        Provider
         <input
           type="text"
-          value={values.excerpt}
-          onChange={(e) => update("excerpt", e.target.value)}
-          placeholder="A short one-line summary"
+          value={values.provider}
+          onChange={(e) => update("provider", e.target.value)}
+          placeholder="e.g. NSFAS, Standard Bank, Sasol"
           className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
         />
       </label>
 
       <label className="text-sm">
-        Cover image (image URL, optional)
+        Provider logo (image URL, optional)
         <input
           type="text"
-          value={values.coverImageUrl}
-          onChange={(e) => update("coverImageUrl", e.target.value)}
-          placeholder="https://example.com/image.jpg"
+          value={values.providerLogoUrl}
+          onChange={(e) => update("providerLogoUrl", e.target.value)}
+          placeholder="https://provider.com/logo.png"
+          className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
+        />
+        <span className="text-xs text-gray-400 mt-1 block">
+          Paste a link to the provider's logo image. Leave blank to show none.
+        </span>
+      </label>
+
+      <label className="text-sm">
+        Field of study (optional)
+        <input
+          type="text"
+          value={values.fieldOfStudy}
+          onChange={(e) => update("fieldOfStudy", e.target.value)}
+          placeholder="e.g. Engineering, or leave blank for Any"
           className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
         />
       </label>
 
       <label className="text-sm">
-        Content
-        <textarea
-          value={values.content}
-          onChange={(e) => update("content", e.target.value)}
-          rows={12}
-          className="mt-1 w-full px-3 py-2 rounded-md border text-sm"
+        Description
+        <div className="mt-1">
+          <RichTextEditor
+            value={values.description}
+            onChange={(html) => update("description", html)}
+          />
+        </div>
+      </label>
+
+      <label className="text-sm">
+        Closing date (optional)
+        <input
+          type="date"
+          value={values.closingDate}
+          onChange={(e) => update("closingDate", e.target.value)}
+          className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
         />
       </label>
 
-      <label className="text-sm flex items-center gap-2">
+      <label className="text-sm">
+        Apply link
         <input
-          type="checkbox"
-          checked={values.published}
-          onChange={(e) => update("published", e.target.checked)}
+          type="text"
+          value={values.applyLink}
+          onChange={(e) => update("applyLink", e.target.value)}
+          placeholder="https://provider.com/apply"
+          className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
         />
-        Published (visible to the public)
       </label>
 
       {error && <p className="text-xs text-red-600">{error}</p>}
@@ -124,7 +163,7 @@ export default function BlogForm({
         disabled={saving}
         className="h-10 rounded-md bg-brand-600 text-white text-sm mt-2"
       >
-        {saving ? "Saving..." : postId ? "Save changes" : "Publish article"}
+        {saving ? "Saving..." : bursaryId ? "Save changes" : "Post bursary"}
       </button>
     </form>
   );

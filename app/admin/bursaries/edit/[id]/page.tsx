@@ -16,6 +16,7 @@ export default async function EditBursaryPage({ params }: { params: { id: string
         initialValues={{
           title: bursary.title,
           provider: bursary.provider,
+          providerLogoUrl: bursary.providerLogoUrl || "",
           fieldOfStudy: bursary.fieldOfStudy || "",
           description: bursary.description,
           closingDate: bursary.closingDate

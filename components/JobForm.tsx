@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import RichTextEditor from "@/components/RichTextEditor";
 
 type JobFormValues = {
   title: string;
@@ -163,12 +164,12 @@ export default function JobForm({
 
       <label className="text-sm">
         Description
-        <textarea
-          value={values.description}
-          onChange={(e) => update("description", e.target.value)}
-          rows={6}
-          className="mt-1 w-full px-3 py-2 rounded-md border text-sm"
-        />
+        <div className="mt-1">
+          <RichTextEditor
+            value={values.description}
+            onChange={(html) => update("description", html)}
+          />
+        </div>
       </label>
 
       <label className="text-sm">
