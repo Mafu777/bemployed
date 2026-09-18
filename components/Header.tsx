@@ -7,7 +7,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 const LINKS = [
   { href: "/", label: "Local Jobs" },
-  { href: "/Remote-jobs", label: "Remote Jobs" },
+  { href: "/remote-jobs", label: "Remote Jobs" },
   { href: "/work-abroad", label: "Work Abroad" },
   { href: "/bursaries", label: "Bursaries" },
   { href: "/blog", label: "Blog" },

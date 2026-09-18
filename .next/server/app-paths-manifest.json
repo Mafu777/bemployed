@@ -1,9 +1,4 @@
 {
-  "/blog/page": "app/blog/page.js",
-  "/admin/login/page": "app/admin/login/page.js",
   "/page": "app/page.js",
-  "/api/admin/login/route": "app/api/admin/login/route.js",
-  "/admin/blog/new/page": "app/admin/blog/new/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/blog/page": "app/admin/blog/page.js"
+  "/remote-jobs/page": "app/remote-jobs/page.js"
 }
