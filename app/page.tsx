@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import JobCard from "@/components/JobCard";
 import SearchFilterBar from "@/components/SearchFilterBar";
 import AdSlot from "@/components/AdSlot";
-
+import HeroSlideshow from "@/components/HeroSlideshow";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
@@ -47,80 +47,8 @@ export default async function HomePage({
     <main className="min-h-screen bg-slate-50">
 
       {/* HERO */}
-      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 md:py-20">
-
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-blue-300 mb-4">
-              Welcome to BEmployed
-            </p>
-
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
-              Your next opportunity
-              <span className="text-blue-400"> starts here.</span>
-            </h1>
-
-            <p className="mt-5 text-lg md:text-xl text-slate-300 max-w-2xl">
-              Find jobs, remote work, internships, learnerships, bursaries
-              and career opportunities — all in one place.
-            </p>
-          </div>
-
-          {/* SEARCH */}
-          <div className="mt-8 bg-white rounded-2xl p-2 shadow-xl">
-            <Suspense fallback={null}>
-              <SearchFilterBar />
-            </Suspense>
-          </div>
-
-          <div className="mt-5 flex flex-wrap gap-2 text-sm">
-            <span className="text-slate-400">Popular:</span>
-
-            <Link
-              href="/jobs?q=Admin"
-              className="hover:text-blue-300 transition"
-            >
-              Admin
-            </Link>
-
-            <span className="text-slate-600">•</span>
-
-            <Link
-              href="/jobs?q=Driver"
-              className="hover:text-blue-300 transition"
-            >
-              Driver
-            </Link>
-
-            <span className="text-slate-600">•</span>
-
-            <Link
-              href="/jobs?q=Sales"
-              className="hover:text-blue-300 transition"
-            >
-              Sales
-            </Link>
-
-            <span className="text-slate-600">•</span>
-
-            <Link
-              href="/jobs?q=Retail"
-              className="hover:text-blue-300 transition"
-            >
-              Retail
-            </Link>
-
-            <span className="text-slate-600">•</span>
-
-            <Link
-              href="/jobs?q=IT"
-              className="hover:text-blue-300 transition"
-            >
-              IT
-            </Link>
-          </div>
-        </div>
-      </section>
+      <HeroSlideshow />
+       
 
       {/* EXPLORE OPPORTUNITIES */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
