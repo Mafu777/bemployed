@@ -15,6 +15,7 @@ model Job {
   location        String
   jobType         String
   category        String
+  placementType   String   @default("Local")
   description     String
   applyLink       String
   salaryMin       Int?

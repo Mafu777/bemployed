@@ -20,6 +20,7 @@ export default async function EditJobPage({ params }: { params: { id: string } }
           location: job.location,
           jobType: job.jobType,
           category: job.category,
+          placementType: job.placementType || "Local",
           description: job.description,
           applyLink: job.applyLink,
           salaryMin: job.salaryMin?.toString() || "",

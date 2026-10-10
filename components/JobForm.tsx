@@ -11,6 +11,7 @@ type JobFormValues = {
   location: string;
   jobType: string;
   category: string;
+  placementType: string;
   description: string;
   applyLink: string;
   salaryMin: string;
@@ -20,6 +21,7 @@ type JobFormValues = {
 };
 
 const JOB_TYPES = ["Full-time", "Part-time", "Contract", "Remote", "Internship"];
+const PLACEMENT_TYPES = ["Local", "Remote", "Work Abroad"];
 
 export default function JobForm({
   initialValues,
@@ -37,6 +39,7 @@ export default function JobForm({
       location: "",
       jobType: "Full-time",
       category: "",
+      placementType: "Local",
       description: "",
       applyLink: "",
       salaryMin: "",
@@ -149,6 +152,24 @@ export default function JobForm({
             </option>
           ))}
         </select>
+      </label>
+
+      <label className="text-sm">
+        Placement
+        <select
+          value={values.placementType}
+          onChange={(e) => update("placementType", e.target.value)}
+          className="mt-1 w-full h-10 px-3 rounded-md border text-sm bg-white"
+        >
+          {PLACEMENT_TYPES.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+        <span className="text-xs text-gray-400 mt-1 block">
+          Where will this job actually be based? This controls whether it shows under Remote Jobs or Work Abroad.
+        </span>
       </label>
 
       <label className="text-sm">
