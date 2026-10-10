@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import "./globals.css";
+import BottomTabBar from "@/components/BottomTabBar";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -36,13 +37,13 @@ export default function RootLayout({
         ) : null}
       </head>
       <body className={`${jakarta.className} antialiased`}>
-        <Suspense fallback={null}>
-          <Header />
-        </Suspense>
+  <Suspense fallback={null}>
+    <Header />
+  </Suspense>
 
-        <main>{children}</main>
+  <main className="pb-16 md:pb-0">{children}</main>
 
-        <footer className="px-4 py-6 border-t text-center text-xs text-gray-400">
+  <footer className="px-4 py-6 border-t text-center text-xs text-gray-400 pb-16 md:pb-6">
           <p>&copy; {new Date().getFullYear()} BEmployed</p>
           <nav className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
             <Link href="/about" className="underline">
@@ -62,6 +63,8 @@ export default function RootLayout({
             </Link>
           </nav>
         </footer>
+        
+        <BottomTabBar />
       </body>
     </html>
   );

@@ -50,3 +50,14 @@ model BlogPost {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
+model Tender {
+  id           String    @id @default(cuid())
+  title        String
+  issuer       String    // department / municipality
+  reference    String?   // e.g. EKU/2026/118
+  location     String
+  closingDate  DateTime?
+  applyUrl     String    // link to the tender document
+  description  String?
+  createdAt    DateTime  @default(now())
+}

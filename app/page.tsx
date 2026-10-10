@@ -6,6 +6,7 @@ import SearchFilterBar from "@/components/SearchFilterBar";
 import AdSlot from "@/components/AdSlot";
 import HeroSlideshow from "@/components/HeroSlideshow";
 export const dynamic = "force-dynamic";
+import { IconBriefcase, IconHome, IconPlane, IconCap, IconRocket, IconBook } from "@/components/Icons";
 
 export const metadata = {
   title:
@@ -71,7 +72,9 @@ export default async function HomePage({
             href="/jobs"
             className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
           >
-            <div className="text-3xl mb-3">💼</div>
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
+  <IconBriefcase className="w-5 h-5" />
+</div>
 
             <h3 className="font-bold text-slate-900">
               Jobs
@@ -87,7 +90,9 @@ export default async function HomePage({
             href="/remote-jobs"
             className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
           >
-            <div className="text-3xl mb-3">🏠</div>
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
+              <IconHome className="w-5 h-5" />
+            </div>
 
             <h3 className="font-bold text-slate-900">
               Remote Jobs
@@ -103,7 +108,9 @@ export default async function HomePage({
             href="/work-abroad"
             className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
           >
-            <div className="text-3xl mb-3">✈️</div>
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
+              <IconPlane className="w-5 h-5" />
+            </div>
 
             <h3 className="font-bold text-slate-900">
               Work Abroad
@@ -119,7 +126,9 @@ export default async function HomePage({
             href="/bursaries"
             className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
           >
-            <div className="text-3xl mb-3">🎓</div>
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
+              <IconCap className="w-5 h-5" />
+            </div>
 
             <h3 className="font-bold text-slate-900">
               Bursaries
@@ -135,7 +144,9 @@ export default async function HomePage({
             href="/bursaries"
             className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
           >
-            <div className="text-3xl mb-3">🚀</div>
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
+              <IconRocket className="w-5 h-5" />
+            </div>
 
             <h3 className="font-bold text-slate-900">
               Internships
@@ -150,7 +161,9 @@ export default async function HomePage({
             href="/bursaries"
             className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
           >
-            <div className="text-3xl mb-3">📚</div>
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
+              <IconBook className="w-5 h-5" />
+            </div>
 
             <h3 className="font-bold text-slate-900">
               Learnerships

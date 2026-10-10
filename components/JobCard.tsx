@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { IconBookmark, IconShare } from "@/components/Icons";
 
 type Job = {
   id: string;
@@ -30,8 +34,7 @@ function formatSalary(
   period?: string | null
 ): string | null {
   if (!min && !max) return null;
-  const fmt = (n: number) =>
-    `R${n.toLocaleString("en-ZA")}`;
+  const fmt = (n: number) => `R${n.toLocaleString("en-ZA")}`;
   const label = period === "year" ? "/ year" : "/ month";
   if (min && max) return `${fmt(min)} - ${fmt(max)} ${label}`;
   if (min) return `From ${fmt(min)} ${label}`;
@@ -55,6 +58,8 @@ function formatJobClosingDate(date?: string | Date | null): string | null {
 }
 
 export default function JobCard({ job }: { job: Job }) {
+  const [saved, setSaved] = useState(false);
+
   const initials = job.company
     .split(" ")
     .map((word) => word[0])
@@ -62,11 +67,20 @@ export default function JobCard({ job }: { job: Job }) {
     .slice(0, 2)
     .toUpperCase();
 
+  const salary = formatSalary(job.salaryMin, job.salaryMax, job.salaryPeriod);
+  const closing = formatJobClosingDate(job.closingDate);
+
   return (
-    <Link
-      href={`/jobs/${job.id}`}
-      className="block bg-white border rounded-xl p-4 hover:border-brand-400 transition-colors"
-    >
+    <div className="relative bg-white border rounded-xl p-4 hover:border-brand-400 transition-colors">
+      {/* Stretched link: makes the whole card clickable without nesting
+          interactive elements inside an <a>. The save/share buttons sit
+          above it via z-10 and stop propagation so their own clicks win. */}
+      <Link
+        href={`/jobs/${job.id}`}
+        className="absolute inset-0 z-0"
+        aria-label={`View ${job.title} at ${job.company}`}
+      />
+
       <div className="flex items-start gap-3">
         {job.companyLogoUrl ? (
           <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0 border">
@@ -83,24 +97,57 @@ export default function JobCard({ job }: { job: Job }) {
             {initials}
           </div>
         )}
-        <div className="min-w-0">
+
+        <div className="min-w-0 flex-1">
           <p className="font-medium text-sm truncate">{job.title}</p>
           <p className="text-xs text-gray-500 mt-0.5">
             {job.company} &middot; {job.location}
           </p>
         </div>
+
+        <div className="relative z-10 flex gap-1 shrink-0">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setSaved((s) => !s);
+            }}
+            aria-pressed={saved}
+            aria-label={saved ? "Remove from saved jobs" : "Save job"}
+            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+              saved ? "bg-amber-50 text-amber-600" : "bg-gray-100 text-gray-500"
+            }`}
+          >
+            <IconBookmark className={`w-4 h-4 ${saved ? "fill-amber-600" : ""}`} />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              if (navigator.share) {
+                navigator.share({
+                  title: job.title,
+                  text: `${job.title} at ${job.company} — BEmployed`,
+                  url: `${window.location.origin}/jobs/${job.id}`,
+                }).catch(() => {});
+              } else {
+                navigator.clipboard?.writeText(`${window.location.origin}/jobs/${job.id}`);
+              }
+            }}
+            aria-label="Share job"
+            className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 text-gray-500"
+          >
+            <IconShare className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
-      {formatSalary(job.salaryMin, job.salaryMax, job.salaryPeriod) && (
-        <p className="text-sm font-medium text-brand-700 mt-2">
-          {formatSalary(job.salaryMin, job.salaryMax, job.salaryPeriod)}
-        </p>
+      {salary && (
+        <p className="text-sm font-medium text-brand-700 mt-2">{salary}</p>
       )}
 
-      {formatJobClosingDate(job.closingDate) && (
-        <p className="text-xs text-gray-500 mt-1">
-          {formatJobClosingDate(job.closingDate)}
-        </p>
+      {closing && (
+        <p className="text-xs text-gray-500 mt-1">{closing}</p>
       )}
 
       <div className="flex gap-2 mt-3">
@@ -111,6 +158,6 @@ export default function JobCard({ job }: { job: Job }) {
           {timeAgo(job.createdAt)}
         </span>
       </div>
-    </Link>
+    </div>
   );
 }
