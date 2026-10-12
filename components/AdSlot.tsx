@@ -30,12 +30,8 @@ export default function AdSlot({ slotId }: { slotId: string }) {
   }, [adsenseId]);
 
   if (!adsenseId) {
-    return (
-      <div className="border border-dashed rounded-xl p-4 text-center text-xs text-gray-400">
-        Advertisement placeholder &middot; set NEXT_PUBLIC_ADSENSE_CLIENT_ID to go live
-      </div>
-    );
-  }
+  return null;
+}
 
   return (
     <ins

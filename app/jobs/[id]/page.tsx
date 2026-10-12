@@ -114,53 +114,55 @@ export default async function JobDetailPage({
   const closing = formatJobClosingDate(job.closingDate);
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
+    <div className="max-w-2xl mx-auto px-4 py-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd) }}
       />
 
       {job.companyLogoUrl && (
-        <div className="w-12 h-12 rounded-lg overflow-hidden border mb-3">
+        <div className="w-14 h-14 rounded-lg overflow-hidden border mb-4">
           <Image
             src={job.companyLogoUrl}
             alt={job.company}
-            width={48}
-            height={48}
+            width={56}
+            height={56}
             className="w-full h-full object-cover"
           />
         </div>
       )}
-      <p className="text-xs text-gray-400 mb-1">
+      <p className="text-sm text-gray-500 mb-1">
         {job.company} &middot; {job.location}
       </p>
-      <h1 className="text-xl font-medium mb-3">{job.title}</h1>
-      <div className="flex gap-2 mb-3">
-        <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600">
+      <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">{job.title}</h1>
+      <div className="flex gap-2 mb-4">
+        <span className="text-sm px-2.5 py-1 rounded bg-gray-100 text-gray-700">
           {job.jobType}
         </span>
-        <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600">
+        <span className="text-sm px-2.5 py-1 rounded bg-gray-100 text-gray-700">
           {job.category}
         </span>
       </div>
 
       {closing && (
-        <p className="text-xs text-gray-500 mb-5">Closing date: {closing}</p>
+        <p className="text-sm text-gray-500 mb-6">Closing date: {closing}</p>
       )}
 
       <a
         href={job.applyLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-block bg-brand-600 text-white text-sm px-5 py-2.5 rounded-md mb-6"
+        className="inline-block bg-brand-600 text-white text-base font-semibold px-6 py-3 rounded-md mb-8"
       >
         Apply for this job
       </a>
 
-      <div
-        className="prose prose-sm max-w-none text-gray-700 mb-6"
-        dangerouslySetInnerHTML={{ __html: job.description }}
-      />
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 md:p-8 mb-6">
+        <div
+          className="prose prose-base md:prose-lg max-w-none text-gray-700 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: job.description }}
+        />
+      </div>
 
       <AdSlot slotId="2222222222" />
     </div>

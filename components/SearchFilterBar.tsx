@@ -19,41 +19,38 @@ export default function SearchFilterBar() {
   }
 
   return (
-    <div className="bg-gray-50 border-b px-4 pt-5 pb-4">
-      <p className="text-lg font-medium mb-1">Find your next opportunity</p>
-<p className="text-sm text-gray-500 mb-3">
-  Jobs, remote work, internships, learnerships and more — all in one place.
-</p>
+    <div className="px-1.5 py-1.5">
       <form
         onSubmit={(e) => {
           e.preventDefault();
           applyFilters(query, activeType);
         }}
-        className="flex gap-2 mb-3"
+        className="flex gap-2"
       >
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Job title or keyword"
-          className="flex-1 h-9 px-3 rounded-md border text-sm bg-white"
+          className="flex-1 h-11 px-4 rounded-xl border border-gray-200 text-sm bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           type="submit"
-          className="h-9 px-4 rounded-md bg-brand-600 text-white text-sm"
+          className="h-11 px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold transition shrink-0"
         >
           Search
         </button>
       </form>
-      <div className="flex gap-2 overflow-x-auto">
+      <div className="flex gap-2 overflow-x-auto mt-2.5 pb-0.5">
         {JOB_TYPES.map((type) => (
           <button
             key={type}
+            type="button"
             onClick={() => applyFilters(query, type)}
-            className={`text-xs whitespace-nowrap px-3 py-1.5 rounded-full border ${
+            className={`text-xs whitespace-nowrap px-3 py-1.5 rounded-full border transition ${
               activeType === type
                 ? "bg-brand-600 text-white border-brand-600"
-                : "bg-white text-gray-600"
+                : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
             }`}
           >
             {type}
