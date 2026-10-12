@@ -1,12 +1,10 @@
-import { Suspense } from "react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import JobCard from "@/components/JobCard";
-import SearchFilterBar from "@/components/SearchFilterBar";
 import AdSlot from "@/components/AdSlot";
 import HeroSlideshow from "@/components/HeroSlideshow";
+
 export const dynamic = "force-dynamic";
-import { IconBriefcase, IconHome, IconPlane, IconCap, IconRocket, IconBook } from "@/components/Icons";
 
 export const metadata = {
   title:
@@ -49,224 +47,39 @@ export default async function HomePage({
 
       {/* HERO */}
       <HeroSlideshow />
-       
 
-      {/* EXPLORE OPPORTUNITIES */}
+      {/* CAREER SUPPORT */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-
-        <div className="mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-            Explore opportunities
-          </h2>
-
-          <p className="mt-2 text-slate-600">
-            More than just jobs. Discover different ways to move your career
-            forward.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-
-          {/* JOBS */}
-          <Link
-            href="/jobs"
-            className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
-          >
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
-  <IconBriefcase className="w-5 h-5" />
-</div>
-
-            <h3 className="font-bold text-slate-900">
-              Jobs
-            </h3>
-
-            <p className="text-sm text-slate-500 mt-1">
-              Find your next role
+        <div className="bg-blue-600 text-white rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div>
+            <p className="text-sm font-semibold text-blue-100">
+              CAREER SUPPORT
             </p>
-          </Link>
-
-          {/* REMOTE JOBS */}
-          <Link
-            href="/remote-jobs"
-            className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
-          >
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
-              <IconHome className="w-5 h-5" />
-            </div>
-
-            <h3 className="font-bold text-slate-900">
-              Remote Jobs
+            <h3 className="text-xl md:text-2xl font-bold mt-2">
+              Make your next move count.
             </h3>
-
-            <p className="text-sm text-slate-500 mt-1">
-              Work from anywhere
+            <p className="text-sm text-blue-100 mt-3 leading-6 max-w-xl">
+              Get practical advice on CVs, interviews, skills and building
+              your career.
             </p>
-          </Link>
-
-          {/* WORK ABROAD */}
-          <Link
-            href="/work-abroad"
-            className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
-          >
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
-              <IconPlane className="w-5 h-5" />
-            </div>
-
-            <h3 className="font-bold text-slate-900">
-              Work Abroad
-            </h3>
-
-            <p className="text-sm text-slate-500 mt-1">
-              Explore international work
-            </p>
-          </Link>
-
-          {/* BURSARIES */}
-          <Link
-            href="/bursaries"
-            className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
-          >
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
-              <IconCap className="w-5 h-5" />
-            </div>
-
-            <h3 className="font-bold text-slate-900">
-              Bursaries
-            </h3>
-
-            <p className="text-sm text-slate-500 mt-1">
-              Find funding opportunities
-            </p>
-          </Link>
-
-          {/* INTERNSHIPS + LEARNERSHIPS → BURSARIES */}
-          <Link
-            href="/bursaries"
-            className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
-          >
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
-              <IconRocket className="w-5 h-5" />
-            </div>
-
-            <h3 className="font-bold text-slate-900">
-              Internships
-            </h3>
-
-            <p className="text-sm text-slate-500 mt-1">
-              Gain experience and grow
-            </p>
-          </Link>
+          </div>
 
           <Link
-            href="/bursaries"
-            className="bg-white rounded-2xl p-5 border border-slate-200 hover:shadow-lg hover:-translate-y-1 transition"
+            href="/blog"
+            className="shrink-0 inline-block bg-white text-blue-700 font-semibold px-5 py-3 rounded-lg hover:bg-blue-50 transition"
           >
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
-              <IconBook className="w-5 h-5" />
-            </div>
-
-            <h3 className="font-bold text-slate-900">
-              Learnerships
-            </h3>
-
-            <p className="text-sm text-slate-500 mt-1">
-              Learn while you grow
-            </p>
+            Explore Career Advice
           </Link>
-
         </div>
       </section>
 
-      {/* JOBS + SIDEBARS */}
+      {/* LATEST OPPORTUNITIES + SIDEBAR */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-12">
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-          {/* LEFT SIDEBAR */}
-          <aside className="lg:col-span-3 space-y-5">
-
-            <div className="bg-white rounded-2xl border border-slate-200 p-6">
-
-              <h3 className="font-bold text-lg text-slate-900">
-                Browse opportunities
-              </h3>
-
-              <div className="mt-4 space-y-3 text-sm">
-
-                <Link
-                  href="/jobs?type=Full-time"
-                  className="block text-slate-600 hover:text-blue-600"
-                >
-                  → Full-time jobs
-                </Link>
-
-                <Link
-                  href="/jobs?type=Part-time"
-                  className="block text-slate-600 hover:text-blue-600"
-                >
-                  → Part-time jobs
-                </Link>
-
-                <Link
-                  href="/jobs?type=Contract"
-                  className="block text-slate-600 hover:text-blue-600"
-                >
-                  → Contract jobs
-                </Link>
-
-                <Link
-                  href="/jobs?type=Remote"
-                  className="block text-slate-600 hover:text-blue-600"
-                >
-                  → Remote jobs
-                </Link>
-
-                <Link
-                  href="/work-abroad"
-                  className="block text-slate-600 hover:text-blue-600"
-                >
-                  → Work abroad
-                </Link>
-
-                <Link
-                  href="/bursaries"
-                  className="block text-slate-600 hover:text-blue-600"
-                >
-                  → Bursaries
-                </Link>
-
-              </div>
-            </div>
-
-            {/* CAREER ADVICE */}
-            <div className="bg-blue-600 text-white rounded-2xl p-6">
-
-              <p className="text-sm font-semibold text-blue-100">
-                CAREER SUPPORT
-              </p>
-
-              <h3 className="text-xl font-bold mt-2">
-                Make your next move count.
-              </h3>
-
-              <p className="text-sm text-blue-100 mt-3 leading-6">
-                Get practical advice on CVs, interviews, skills and building
-                your career.
-              </p>
-
-              <Link
-                href="/blog"
-                className="inline-block mt-5 bg-white text-blue-700 font-semibold px-4 py-2 rounded-lg hover:bg-blue-50 transition"
-              >
-                Explore Career Advice
-              </Link>
-
-            </div>
-
-          </aside>
-
           {/* MAIN JOBS */}
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-8">
 
             <div className="flex items-end justify-between mb-5">
 
@@ -335,7 +148,7 @@ export default async function HomePage({
           </div>
 
           {/* RIGHT SIDEBAR */}
-          <aside className="lg:col-span-3 space-y-5">
+          <aside className="lg:col-span-4 space-y-5">
 
             {/* START HERE */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6">
@@ -406,146 +219,6 @@ export default async function HomePage({
           </aside>
 
         </div>
-      </section>
-
-      {/* CAREER DEVELOPMENT */}
-      <section className="bg-white border-y border-slate-200">
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
-
-          <div className="max-w-2xl mb-8">
-
-            <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
-              Career development
-            </p>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2">
-              More than finding a job.
-              <br />
-              Build your career.
-            </h2>
-
-            <p className="text-slate-600 mt-4 leading-7">
-              The right opportunity is only part of the journey. Learn how to
-              present yourself, develop valuable skills and prepare for your
-              next career move.
-            </p>
-
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-5">
-
-            {/* CV → BLOG */}
-            <Link
-              href="/blog"
-              className="group rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition"
-            >
-
-              <div className="text-3xl">
-                📄
-              </div>
-
-              <h3 className="font-bold text-xl text-slate-900 mt-4">
-                Build a better CV
-              </h3>
-
-              <p className="text-slate-600 text-sm mt-2 leading-6">
-                Learn how to present your experience, skills and achievements
-                effectively.
-              </p>
-
-              <span className="inline-block mt-5 text-blue-600 font-semibold text-sm">
-                CV advice →
-              </span>
-
-            </Link>
-
-            {/* INTERVIEW → BLOG */}
-            <Link
-              href="/blog"
-              className="group rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition"
-            >
-
-              <div className="text-3xl">
-                🎤
-              </div>
-
-              <h3 className="font-bold text-xl text-slate-900 mt-4">
-                Ace your interview
-              </h3>
-
-              <p className="text-slate-600 text-sm mt-2 leading-6">
-                Prepare for common interview questions and learn how to
-                communicate your value.
-              </p>
-
-              <span className="inline-block mt-5 text-blue-600 font-semibold text-sm">
-                Interview advice →
-              </span>
-
-            </Link>
-
-            {/* SKILLS → BLOG */}
-            <Link
-              href="/blog"
-              className="group rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition"
-            >
-
-              <div className="text-3xl">
-                📈
-              </div>
-
-              <h3 className="font-bold text-xl text-slate-900 mt-4">
-                Develop your skills
-              </h3>
-
-              <p className="text-slate-600 text-sm mt-2 leading-6">
-                Discover practical skills and knowledge that can strengthen
-                your career prospects.
-              </p>
-
-              <span className="inline-block mt-5 text-blue-600 font-semibold text-sm">
-                Explore skills →
-              </span>
-
-            </Link>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* EMPLOYER CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-
-        <div className="rounded-3xl bg-slate-900 text-white px-6 md:px-12 py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-
-          <div className="max-w-2xl">
-
-            <p className="text-sm font-semibold uppercase tracking-wide text-blue-400">
-              For employers
-            </p>
-
-            <h2 className="text-3xl font-bold mt-2">
-              Looking for your next hire?
-            </h2>
-
-            <p className="text-slate-300 mt-3 leading-7">
-              Connect your opportunities with people actively looking to build
-              their careers.
-            </p>
-
-          </div>
-
-          <Link
-            href="/contact"
-            className="shrink-0 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition"
-          >
-            For Employers →
-          </Link>
-
-        </div>
-
       </section>
 
     </main>
