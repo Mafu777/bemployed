@@ -58,12 +58,9 @@ export default function RootLayout({
             <Link href="/terms" className="underline">
               Terms &amp; Conditions
             </Link>
-            <Link href="/admin/login" className="underline">
-              Admin login
-            </Link>
           </nav>
         </footer>
-        
+
         <BottomTabBar />
       </body>
     </html>
