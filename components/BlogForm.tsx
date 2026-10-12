@@ -1,3 +1,4 @@
+// STEP 2 - replace components/BlogForm.tsx with this code.
 "use client";
 
 import { useState } from "react";
@@ -10,6 +11,7 @@ type BlogFormValues = {
   content: string;
   coverImageUrl: string;
   published: boolean;
+  featured: boolean;
 };
 
 export default function BlogForm({
@@ -27,6 +29,7 @@ export default function BlogForm({
       content: "",
       coverImageUrl: "",
       published: false,
+      featured: false,
     }
   );
   const [error, setError] = useState("");
@@ -117,6 +120,21 @@ export default function BlogForm({
           onChange={(e) => update("published", e.target.checked)}
         />
         Published
+      </label>
+
+      <label className="flex items-start gap-2 text-sm">
+        <input
+          type="checkbox"
+          className="mt-1"
+          checked={values.featured}
+          onChange={(e) => update("featured", e.target.checked)}
+        />
+        <span>
+          Feature this article
+          <span className="block text-xs text-gray-500">
+            Shows it as the large article at the top of the blog page.
+          </span>
+        </span>
       </label>
 
       {error && <p className="text-xs text-red-600">{error}</p>}

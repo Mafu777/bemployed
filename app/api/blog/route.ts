@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { title, excerpt, content, coverImageUrl, published } = body;
+  const { title, excerpt, content, coverImageUrl, published, featured } = body;
 
   if (!title || !content) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
       content,
       coverImageUrl: coverImageUrl || null,
       published: published ?? true,
+      featured: featured ?? false,
     },
   });
 

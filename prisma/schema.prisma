@@ -50,6 +50,7 @@ model BlogPost {
   published     Boolean  @default(true)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  featured Boolean @default(false)
 }
 model Tender {
   id           String    @id @default(cuid())
