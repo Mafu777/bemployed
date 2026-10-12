@@ -138,7 +138,7 @@ const SLIDES: Slide[] = [
   },
 ];
 
-const DURATION_MS = 7000;
+const DURATION_MS = 4000;
 
 export default function HeroSlideshow() {
   const [index, setIndex] = useState(0);
