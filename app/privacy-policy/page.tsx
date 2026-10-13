@@ -7,7 +7,7 @@ export const metadata = {
 const LAST_UPDATED = "9 September 2026";
 const CONTACT_EMAIL = "hello@bemployed.co";
 const SITE_NAME = "BEmployed";
-const SITE_URL = "bemployed.co";
+const SITE_URL = "bemployed.co.za";
 
 export default function PrivacyPolicyPage() {
   return (
