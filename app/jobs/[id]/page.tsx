@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import AdSlot from "@/components/AdSlot";
+import { jobSeo } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -19,17 +20,29 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   const job = await getJob(params.id);
   if (!job) return {};
 
+  const seo = jobSeo(job);
+
   const plainDescription = stripHtml(job.description);
-  const description =
+  const snippet =
     plainDescription.length > 155
       ? `${plainDescription.slice(0, 155)}...`
       : plainDescription;
 
+  // Manual SEO description wins if you filled one in, otherwise use the job text
+  const description =
+    (job as { metaDescription?: string | null }).metaDescription?.trim() ||
+    snippet ||
+    seo.description;
+
   return {
-    title: `${job.title} at ${job.company}${job.location ? ` | ${job.location}` : ""} – BEmployed`,
+    title: seo.title,
     description,
     alternates: {
       canonical: `${BASE_URL}/jobs/${job.id}`,
+    },
+    openGraph: {
+      title: seo.title,
+      description,
     },
   };
 }
