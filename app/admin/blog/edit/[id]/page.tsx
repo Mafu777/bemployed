@@ -1,4 +1,3 @@
-// STEP 3 - replace your existing "Edit article" page file with this code.
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import BlogForm from "@/components/BlogForm";
@@ -19,6 +18,8 @@ export default async function EditBlogPage({ params }: { params: { id: string } 
           excerpt: post.excerpt || "",
           content: post.content,
           coverImageUrl: post.coverImageUrl || "",
+          metaTitle: post.metaTitle || "",
+          metaDescription: post.metaDescription || "",
           published: post.published,
           featured: post.featured,
         }}
