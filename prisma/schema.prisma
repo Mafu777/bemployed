@@ -7,24 +7,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum JobReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model Job {
-  id              String   @id @default(cuid())
-  title           String
-  company         String
-  companyLogoUrl  String?
-  location        String
-  jobType         String
-  category        String
-  placementType   String   @default("Local")
-  description     String
-  applyLink       String
-  salaryMin       Int?
-  salaryMax       Int?
-  salaryPeriod    String?  @default("month")
-  closingDate     DateTime?
-  featured        Boolean  @default(false)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id               String          @id @default(cuid())
+  title            String
+  company          String
+  companyLogoUrl   String?
+  location         String
+  jobType          String
+  category         String
+  placementType    String          @default("Local")
+  description      String
+  applyLink        String
+  salaryMin        Int?
+  salaryMax        Int?
+  salaryPeriod     String?         @default("month")
+  closingDate      DateTime?
+  featured         Boolean         @default(false)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  // Job importer and admin review fields
+  sourceUrl        String?         @unique
+  sourceName       String?
+  reviewStatus     JobReviewStatus @default(APPROVED)
+  importedAt       DateTime?
+  rejectionReason  String?
+
+  @@index([reviewStatus, closingDate])
 }
 
 model Bursary {
@@ -42,24 +57,27 @@ model Bursary {
 }
 
 model BlogPost {
-  id            String   @id @default(cuid())
-  title         String
-  excerpt       String?
-  content       String
-  coverImageUrl String?
-  published     Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  featured Boolean @default(false)
+  id              String   @id @default(cuid())
+  title           String
+  excerpt         String?
+  content         String
+  coverImageUrl   String?
+  metaTitle       String?
+  metaDescription String?
+  published       Boolean  @default(false)
+  featured        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
+
 model Tender {
   id           String    @id @default(cuid())
   title        String
-  issuer       String    // department / municipality
-  reference    String?   // e.g. EKU/2026/118
+  issuer       String
+  reference    String?
   location     String
   closingDate  DateTime?
-  applyUrl     String    // link to the tender document
+  applyUrl     String
   description  String?
   createdAt    DateTime  @default(now())
 }

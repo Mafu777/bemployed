@@ -1,4 +1,3 @@
-// STEP 2 - replace components/BlogForm.tsx with this code.
 "use client";
 
 import { useState } from "react";
@@ -10,6 +9,8 @@ type BlogFormValues = {
   excerpt: string;
   content: string;
   coverImageUrl: string;
+  metaTitle: string;
+  metaDescription: string;
   published: boolean;
   featured: boolean;
 };
@@ -28,6 +29,8 @@ export default function BlogForm({
       excerpt: "",
       content: "",
       coverImageUrl: "",
+      metaTitle: "",
+      metaDescription: "",
       published: false,
       featured: false,
     }
@@ -56,6 +59,8 @@ export default function BlogForm({
         ...values,
         excerpt: values.excerpt || null,
         coverImageUrl: values.coverImageUrl || null,
+        metaTitle: values.metaTitle || null,
+        metaDescription: values.metaDescription || null,
       }),
     });
     setSaving(false);
@@ -101,6 +106,34 @@ export default function BlogForm({
           placeholder="https://example.com/cover.jpg"
           className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
         />
+      </label>
+
+      <label className="text-sm">
+        SEO title (optional)
+        <input
+          type="text"
+          value={values.metaTitle}
+          onChange={(e) => update("metaTitle", e.target.value)}
+          placeholder="Shown on Google. Aim for 60 characters or less"
+          className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
+        />
+        <span className="block text-xs text-gray-500">
+          {values.metaTitle.length}/60
+        </span>
+      </label>
+
+      <label className="text-sm">
+        SEO description (optional)
+        <textarea
+          value={values.metaDescription}
+          onChange={(e) => update("metaDescription", e.target.value)}
+          rows={3}
+          placeholder="Shown under the title on Google. Aim for 155 characters or less"
+          className="mt-1 w-full px-3 py-2 rounded-md border text-sm"
+        />
+        <span className="block text-xs text-gray-500">
+          {values.metaDescription.length}/155
+        </span>
       </label>
 
       <label className="text-sm">
