@@ -35,12 +35,23 @@ async function getJobs(q?: string, type?: string) {
   });
 }
 
+async function getFeaturedPosts() {
+  return prisma.blogPost.findMany({
+    where: { published: true, featured: true },
+    orderBy: { createdAt: "desc" },
+    take: 4,
+  });
+}
+
 export default async function HomePage({
   searchParams,
 }: {
   searchParams: { q?: string; type?: string };
 }) {
-  const jobs = await getJobs(searchParams.q, searchParams.type);
+  const [jobs, posts] = await Promise.all([
+    getJobs(searchParams.q, searchParams.type),
+    getFeaturedPosts(),
+  ]);
 
   return (
     <main className="min-h-screen bg-slate-50">
@@ -150,27 +161,45 @@ export default async function HomePage({
           {/* RIGHT SIDEBAR */}
           <aside className="lg:col-span-4 space-y-5">
 
-            {/* START HERE */}
+            {/* FEATURED ARTICLES */}
             <div className="bg-white rounded-2xl border border-slate-200 p-6">
 
               <p className="text-sm font-semibold text-blue-600">
-                START HERE
+                FEATURED ARTICLES
               </p>
 
-              <h3 className="text-xl font-bold text-slate-900 mt-2">
-                New to job hunting?
-              </h3>
-
-              <p className="text-sm text-slate-600 mt-3 leading-6">
-                Learn how to position yourself, improve your CV and approach
-                interviews with confidence.
-              </p>
+              <div className="mt-4 space-y-4">
+                {posts.length === 0 ? (
+                  <p className="text-sm text-slate-500">
+                    New articles coming soon.
+                  </p>
+                ) : (
+                  posts.map((post) => (
+                    <Link
+                      key={post.id}
+                      href={`/blog/${post.id}`}
+                      className="block group"
+                    >
+                      <h3 className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 leading-snug">
+                        {post.title}
+                      </h3>
+                      <p className="text-xs text-slate-400 mt-1">
+                        {new Date(post.createdAt).toLocaleDateString("en-ZA", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </Link>
+                  ))
+                )}
+              </div>
 
               <Link
                 href="/blog"
                 className="inline-block mt-5 font-semibold text-blue-600 hover:text-blue-700"
               >
-                Get career advice →
+                All articles →
               </Link>
 
             </div>

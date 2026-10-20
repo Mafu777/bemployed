@@ -12,4 +12,4 @@ export const CITIES: City[] = [
 ];
 
 export const getCityBySlug = (slug: string) =>
-  CITIES.find((c) => c.slug === slug) ?? null;
+  CITIES.find((c) => c.slug === slug) ?? null; 
