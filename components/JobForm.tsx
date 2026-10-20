@@ -3,16 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import RichTextEditor from "@/components/RichTextEditor";
+import { CITIES } from "@/lib/cities";
 
 type JobFormValues = {
   title: string;
   company: string;
   companyLogoUrl: string;
   location: string;
+  city: string;
   jobType: string;
   category: string;
   placementType: string;
   description: string;
+  minRequirements: string;
+  keyResponsibilities: string;
   applyLink: string;
   salaryMin: string;
   salaryMax: string;
@@ -37,10 +41,13 @@ export default function JobForm({
       company: "",
       companyLogoUrl: "",
       location: "",
+      city: "",
       jobType: "Full-time",
       category: "",
       placementType: "Local",
       description: "",
+      minRequirements: "",
+      keyResponsibilities: "",
       applyLink: "",
       salaryMin: "",
       salaryMax: "",
@@ -60,7 +67,7 @@ export default function JobForm({
     setError("");
 
     if (!values.title || !values.company || !values.location || !values.category || !values.description || !values.applyLink) {
-      setError("Fill in every field before saving.");
+      setError("Fill in all the required fields before saving.");
       return;
     }
     try {
@@ -76,6 +83,9 @@ export default function JobForm({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...values,
+        city: values.city || null,
+        minRequirements: values.minRequirements || null,
+        keyResponsibilities: values.keyResponsibilities || null,
         salaryMin: values.salaryMin ? Number(values.salaryMin) : null,
         salaryMax: values.salaryMax ? Number(values.salaryMax) : null,
         salaryPeriod: values.salaryPeriod || null,
@@ -134,9 +144,28 @@ export default function JobForm({
           type="text"
           value={values.location}
           onChange={(e) => update("location", e.target.value)}
-          placeholder="e.g. Johannesburg, or Remote"
+          placeholder="e.g. Sandton, Johannesburg, or Remote"
           className="mt-1 w-full h-10 px-3 rounded-md border text-sm"
         />
+      </label>
+
+      <label className="text-sm">
+        City (for landing pages)
+        <select
+          value={values.city}
+          onChange={(e) => update("city", e.target.value)}
+          className="mt-1 w-full h-10 px-3 rounded-md border text-sm bg-white"
+        >
+          <option value="">Other / Remote (no city page)</option>
+          {CITIES.map((c) => (
+            <option key={c.slug} value={c.name}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+        <span className="text-xs text-gray-400 mt-1 block">
+          Pick the main city so this job appears on that city's page.
+        </span>
       </label>
 
       <label className="text-sm">
@@ -183,7 +212,7 @@ export default function JobForm({
         />
       </label>
 
-      <label className="text-sm">
+      <div className="text-sm">
         Description
         <div className="mt-1">
           <RichTextEditor
@@ -191,7 +220,36 @@ export default function JobForm({
             onChange={(html) => update("description", html)}
           />
         </div>
-      </label>
+        <span className="text-xs text-gray-400 mt-1 block">
+          A short overview of the role and the company.
+        </span>
+      </div>
+
+      <div className="text-sm">
+        Minimum Requirements (optional)
+        <div className="mt-1">
+          <RichTextEditor
+            value={values.minRequirements}
+            onChange={(html) => update("minRequirements", html)}
+          />
+        </div>
+        <span className="text-xs text-gray-400 mt-1 block">
+          Qualifications, experience and skills needed. Use bullet points.
+        </span>
+      </div>
+
+      <div className="text-sm">
+        Key Responsibilities (optional)
+        <div className="mt-1">
+          <RichTextEditor
+            value={values.keyResponsibilities}
+            onChange={(html) => update("keyResponsibilities", html)}
+          />
+        </div>
+        <span className="text-xs text-gray-400 mt-1 block">
+          The main duties of the role. Use bullet points.
+        </span>
+      </div>
 
       <label className="text-sm">
         Salary range (optional)

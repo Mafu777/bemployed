@@ -13,7 +13,7 @@ async function getJob(id: string) {
 }
 
 function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, "");
+  return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -57,11 +57,19 @@ const EMPLOYMENT_TYPE_MAP: Record<string, string> = {
 };
 
 function buildJobPostingJsonLd(job: NonNullable<Awaited<ReturnType<typeof getJob>>>) {
+  const fullDescription = [
+    stripHtml(job.description),
+    job.minRequirements ? `Minimum requirements: ${stripHtml(job.minRequirements)}` : "",
+    job.keyResponsibilities ? `Key responsibilities: ${stripHtml(job.keyResponsibilities)}` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "JobPosting",
     title: job.title,
-    description: stripHtml(job.description),
+    description: fullDescription,
     datePosted: job.createdAt.toISOString(),
     hiringOrganization: {
       "@type": "Organization",
@@ -113,6 +121,21 @@ function formatJobClosingDate(date?: Date | null): string | null {
     month: "long",
     year: "numeric",
   });
+}
+
+// One fixed look for every section: same heading style, same text size and spacing.
+function JobSection({ title, html }: { title: string; html?: string | null }) {
+  if (!html || !stripHtml(html)) return null;
+
+  return (
+    <section className="mb-8 last:mb-0">
+      <h2 className="text-lg font-semibold text-gray-900 mb-3">{title}</h2>
+      <div
+        className="prose prose-base max-w-none text-base text-gray-700 leading-relaxed prose-p:my-3 prose-ul:my-3 prose-li:my-1"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </section>
+  );
 }
 
 export default async function JobDetailPage({
@@ -171,10 +194,9 @@ export default async function JobDetailPage({
       </a>
 
       <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 md:p-8 mb-6">
-        <div
-          className="prose prose-base md:prose-lg max-w-none text-gray-700 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: job.description }}
-        />
+        <JobSection title="Description" html={job.description} />
+        <JobSection title="Minimum Requirements" html={job.minRequirements} />
+        <JobSection title="Key Responsibilities" html={job.keyResponsibilities} />
       </div>
 
       <AdSlot slotId="2222222222" />

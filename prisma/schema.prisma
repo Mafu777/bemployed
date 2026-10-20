@@ -7,46 +7,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum JobReviewStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
 model Job {
-  id               String          @id @default(cuid())
-  title            String
-  company          String
-  companyLogoUrl   String?
-  location         String
-  jobType          String
-  category         String
-  placementType    String          @default("Local")
-  description      String
-  applyLink        String
-  salaryMin        Int?
-  salaryMax        Int?
-  salaryPeriod     String?         @default("month")
-  closingDate      DateTime?
-  featured         Boolean         @default(false)
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-
-  // Job importer and admin review fields
-  sourceUrl        String?         @unique
-  sourceName       String?
-  reviewStatus     JobReviewStatus @default(APPROVED)
-  importedAt       DateTime?
-  rejectionReason  String?
+  id                  String          @id @default(cuid())
+  title               String
+  company             String
+  companyLogoUrl      String?
+  location            String
+  jobType             String
+  category            String
+  description         String
+  applyLink           String
+  featured            Boolean         @default(false)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  salaryMax           Int?
+  salaryMin           Int?
+  salaryPeriod        String?         @default("month")
+  closingDate         DateTime?
+  placementType       String          @default("Local")
+  sourceUrl           String?         @unique
+  sourceName          String?
+  reviewStatus        JobReviewStatus @default(APPROVED)
+  importedAt          DateTime?
+  rejectionReason     String?
+  city                String?
+  minRequirements     String?
+  keyResponsibilities String?
 
   @@index([reviewStatus, closingDate])
+  @@index([city])
 }
 
 model Bursary {
   id              String    @id @default(cuid())
   title           String
   provider        String
-  providerLogoUrl String?
   fieldOfStudy    String?
   description     String
   closingDate     DateTime?
@@ -54,6 +49,7 @@ model Bursary {
   featured        Boolean   @default(false)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  providerLogoUrl String?
 }
 
 model BlogPost {
@@ -62,22 +58,28 @@ model BlogPost {
   excerpt         String?
   content         String
   coverImageUrl   String?
-  metaTitle       String?
-  metaDescription String?
   published       Boolean  @default(false)
-  featured        Boolean  @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  featured        Boolean  @default(false)
+  metaDescription String?
+  metaTitle       String?
 }
 
 model Tender {
-  id           String    @id @default(cuid())
-  title        String
-  issuer       String
-  reference    String?
-  location     String
-  closingDate  DateTime?
-  applyUrl     String
-  description  String?
-  createdAt    DateTime  @default(now())
+  id          String    @id @default(cuid())
+  title       String
+  issuer      String
+  reference   String?
+  location    String
+  closingDate DateTime?
+  applyUrl    String
+  description String?
+  createdAt   DateTime  @default(now())
+}
+
+enum JobReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

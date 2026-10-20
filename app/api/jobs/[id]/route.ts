@@ -12,8 +12,31 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   if (!(await isLoggedInFromCookies())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   const body = await request.json();
-  const job = await prisma.job.update({ where: { id: params.id }, data: body });
+
+  const job = await prisma.job.update({
+    where: { id: params.id },
+    data: {
+      title: body.title,
+      company: body.company,
+      companyLogoUrl: body.companyLogoUrl || null,
+      location: body.location,
+      city: body.city || null,
+      jobType: body.jobType,
+      category: body.category,
+      placementType: body.placementType || "Local",
+      description: body.description,
+      minRequirements: body.minRequirements || null,
+      keyResponsibilities: body.keyResponsibilities || null,
+      applyLink: body.applyLink,
+      salaryMin: body.salaryMin ?? null,
+      salaryMax: body.salaryMax ?? null,
+      salaryPeriod: body.salaryPeriod ?? null,
+      closingDate: body.closingDate ? new Date(body.closingDate) : null,
+    },
+  });
+
   return NextResponse.json(job);
 }
 
