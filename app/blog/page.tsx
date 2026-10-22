@@ -1,4 +1,3 @@
-// STEP 1 - replace app/blog/page.tsx with this code.
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
@@ -8,6 +7,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Career Blog | BEmployed",
   description: "Career advice, job search tips, and workplace insights.",
+  alternates: { canonical: "/blog" },
 };
 
 async function getPosts() {
@@ -52,7 +52,7 @@ export default async function BlogPage() {
           <>
             {/* Featured article */}
             <Link
-              href={`/blog/${featured.id}`}
+              href={`/blog/${featured.slug ?? featured.id}`}
               className="group grid md:grid-cols-2 bg-white border rounded-2xl overflow-hidden hover:border-brand-400 transition-colors"
             >
               <div className="relative w-full aspect-[16/9] md:aspect-auto md:min-h-[280px] bg-gradient-to-br from-brand-600 to-blue-300">
@@ -96,7 +96,7 @@ export default async function BlogPage() {
                   {rest.map((post) => (
                     <Link
                       key={post.id}
-                      href={`/blog/${post.id}`}
+                      href={`/blog/${post.slug ?? post.id}`}
                       className="group grid gap-4 sm:grid-cols-[1fr_200px] sm:gap-8 border-t py-6"
                     >
                       <div>

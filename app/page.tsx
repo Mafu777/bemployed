@@ -177,7 +177,7 @@ export default async function HomePage({
                   posts.map((post) => (
                     <Link
                       key={post.id}
-                      href={`/blog/${post.id}`}
+                      href={`/blog/${post.slug}`}
                       className="block group"
                     >
                       <h3 className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 leading-snug">

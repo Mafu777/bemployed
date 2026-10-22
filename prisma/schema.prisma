@@ -64,6 +64,7 @@ model BlogPost {
   featured        Boolean  @default(false)
   metaDescription String?
   metaTitle       String?
+  slug            String  @unique
 }
 
 model Tender {

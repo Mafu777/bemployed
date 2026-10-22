@@ -1,32 +1,40 @@
-// STEP 6 - replace app/blog/[id]/page.tsx with this code.
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-async function getPost(id: string) {
-  const post = await prisma.blogPost.findUnique({ where: { id } });
-  if (!post || !post.published) return null;
-  return post;
+type Props = { params: Promise<{ slug: string }> };
+
+async function getPost(slug: string) {
+  const bySlug = await prisma.blogPost.findUnique({ where: { slug } });
+  if (bySlug) {
+    return bySlug.published ? bySlug : null;
+  }
+
+  // Old links that still use the ID: redirect to the slug URL
+  const byId = await prisma.blogPost.findUnique({ where: { id: slug } });
+  if (byId?.published && byId.slug) redirect(`/blog/${byId.slug}`);
+
+  return null;
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const post = await getPost(params.id);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPost(slug);
   if (!post) return { title: "Article not found | BEmployed" };
   return {
-    title: `${post.title} | BEmployed Career Blog`,
-    description: post.excerpt || post.title,
+    title: post.metaTitle || `${post.title} | BEmployed Career Blog`,
+    description: post.metaDescription || post.excerpt || post.title,
+    alternates: { canonical: `/blog/${post.slug}` },
   };
 }
 
-export default async function BlogArticlePage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const post = await getPost(params.id);
+export default async function BlogArticlePage({ params }: Props) {
+  const { slug } = await params;
+  const post = await getPost(slug);
   if (!post) notFound();
 
   return (
